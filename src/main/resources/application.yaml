@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: test-elasticsearch
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST:localhost}
+    port: ${RABBIT_MQ_PORT:5672}
+    username: ${RABBIT_MQ_USER:guest}
+    password: ${RABBIT_MQ_PASSWORD:guest}
+    virtual-host: ${RABBIT_MQ_VIRTUAL_HOST:/}
+    listener:
+      type: direct
+      direct:
+        acknowledge-mode: manual
+        prefetch: 1
+        default-requeue-rejected: false
+    cache:
+      channel:
+        size: 50
+    extra:
+      maxInboundMessageBodySize: 205520896
+      observationEnabled: ${TRACING_ENABLED:false}
+  elasticsearch:
+    uris: ${ELASTICSEARCH_PROTOCOL:http}://${ELASTICSEARCH_HOST:localhost}:${ELASTICSEARCH_REST_PORT:9200}
+    username: ${ELASTICSEARCH_USER:elastic}
+    password: ${ELASTICSEARCH_PASSWORD:changeme}
+    connection-timeout: 10s
+    socket-timeout: 60s
