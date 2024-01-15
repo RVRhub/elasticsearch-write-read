@@ -1,5 +1,6 @@
 package dev.rvr.elasticsearchwriteread.service
 
+import co.elastic.clients.elasticsearch.core.BulkResponse
 import dev.rvr.elasticsearchwriteread.model.Product
 import dev.rvr.elasticsearchwriteread.repository.ElasticsearchProductRepository
 import org.slf4j.Logger
@@ -20,11 +21,10 @@ class SynchronizationService(
 
     }
 
-    fun addDocuments(products: List<Product>): Mono<Void> {
+    fun addDocuments(products: List<Product>): Mono<BulkResponse> {
         return productRepository.saveBulk(products)
-            .doOnSuccess { LOG.info("Document saved: {}", it) }
-            .doOnError { LOG.error("Couldn't save Document.", it) }
-            .then()
+            .doOnSuccess{ LOG.info("Documents saved: {}", products.size) }
+            .doOnError { LOG.error("Couldn't save Documents.") }
     }
 
     companion object {
